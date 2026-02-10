@@ -11,7 +11,7 @@ use embassy_sync::waitqueue::WakerRegistration;
 
 use crate::control::{self, InResponse, OutResponse, Recipient, Request, RequestType};
 use crate::driver::{Driver, Endpoint, EndpointError, EndpointIn, EndpointOut};
-use crate::types::InterfaceNumber;
+use crate::types::{InterfaceNumber, StringIndex};
 use crate::{Builder, Handler};
 
 /// This should be used as `device_class` when building the `UsbDevice`.
@@ -240,7 +240,12 @@ impl<'d> Handler for Control<'d> {
 impl<'d, D: Driver<'d>> CdcAcmClass<'d, D> {
     /// Creates a new CdcAcmClass with the provided UsbBus and `max_packet_size` in bytes. For
     /// full-speed devices, `max_packet_size` has to be one of 8, 16, 32 or 64.
-    pub fn new(builder: &mut Builder<'d, D>, state: &'d mut State<'d>, max_packet_size: u16) -> Self {
+    pub fn new(
+        builder: &mut Builder<'d, D>,
+        state: &'d mut State<'d>,
+        max_packet_size: u16,
+        interface_string: Option<StringIndex>,
+    ) -> Self {
         assert!(builder.control_buf_len() >= 7);
 
         let mut func = builder.function(USB_CLASS_CDC, CDC_SUBCLASS_ACM, CDC_PROTOCOL_NONE);
@@ -249,7 +254,7 @@ impl<'d, D: Driver<'d>> CdcAcmClass<'d, D> {
         let mut iface = func.interface();
         let comm_if = iface.interface_number();
         let data_if = u8::from(comm_if) + 1;
-        let mut alt = iface.alt_setting(USB_CLASS_CDC, CDC_SUBCLASS_ACM, CDC_PROTOCOL_NONE, None);
+        let mut alt = iface.alt_setting(USB_CLASS_CDC, CDC_SUBCLASS_ACM, CDC_PROTOCOL_NONE, interface_string);
 
         alt.descriptor(
             CS_INTERFACE,
@@ -283,7 +288,7 @@ impl<'d, D: Driver<'d>> CdcAcmClass<'d, D> {
         // Data interface
         let mut iface = func.interface();
         let data_if = iface.interface_number();
-        let mut alt = iface.alt_setting(USB_CLASS_CDC_DATA, 0x00, CDC_PROTOCOL_NONE, None);
+        let mut alt = iface.alt_setting(USB_CLASS_CDC_DATA, 0x00, CDC_PROTOCOL_NONE, interface_string);
         let read_ep = alt.endpoint_bulk_out(None, max_packet_size);
         let write_ep = alt.endpoint_bulk_in(None, max_packet_size);
 
