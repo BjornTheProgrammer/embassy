@@ -62,7 +62,7 @@ async fn main(_spawner: Spawner) {
     builder.msos_descriptor(windows_version::WIN8_1, 2);
 
     // Create classes on the builder.
-    let mut class = CdcAcmClass::new(&mut builder, &mut state, 64);
+    let mut class = CdcAcmClass::new(&mut builder, &mut state, 64, None);
 
     // Since we want to create MS OS feature descriptors that apply to a function that has already been added to the
     // builder, need to get the MsOsDescriptorWriter from the builder and manually add those descriptors.

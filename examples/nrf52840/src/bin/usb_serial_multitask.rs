@@ -71,7 +71,7 @@ async fn main(spawner: Spawner) {
     );
 
     // Create classes on the builder.
-    let class = CdcAcmClass::new(&mut builder, state, 64);
+    let class = CdcAcmClass::new(&mut builder, state, 64, None);
 
     // Build the builder.
     let usb = builder.build();

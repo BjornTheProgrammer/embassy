@@ -62,7 +62,7 @@ async fn main(spawner: Spawner) {
     let mut class = {
         static STATE: StaticCell<State> = StaticCell::new();
         let state = STATE.init(State::new());
-        CdcAcmClass::new(&mut builder, state, 64)
+        CdcAcmClass::new(&mut builder, state, 64, None)
     };
 
     // Build the builder.

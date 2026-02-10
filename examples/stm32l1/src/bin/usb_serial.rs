@@ -56,7 +56,7 @@ async fn main(_spawner: Spawner) {
         &mut control_buf,
     );
 
-    let mut class = CdcAcmClass::new(&mut builder, &mut state, 64);
+    let mut class = CdcAcmClass::new(&mut builder, &mut state, 64, None);
 
     let mut usb = builder.build();
 

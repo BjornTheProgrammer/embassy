@@ -56,10 +56,10 @@ async fn main(_spawner: Spawner) {
     );
 
     // Create classes on the builder.
-    let mut class = CdcAcmClass::new(&mut builder, &mut state, 64);
+    let mut class = CdcAcmClass::new(&mut builder, &mut state, 64, None);
 
     // Create a class for the logger
-    let logger_class = CdcAcmClass::new(&mut builder, &mut logger_state, 64);
+    let logger_class = CdcAcmClass::new(&mut builder, &mut logger_state, 64, None);
 
     // Creates the logger and returns the logger future
     // Note: You'll need to use log::info! afterwards instead of info! for this to work (this also applies to all the other log::* macros)

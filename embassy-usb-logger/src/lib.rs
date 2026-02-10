@@ -112,7 +112,7 @@ impl<const N: usize, T: ReceiverHandler + Send + Sync> UsbLogger<N, T> {
         );
 
         // Create classes on the builder.
-        let class = CdcAcmClass::new(&mut builder, &mut state.state, MAX_PACKET_SIZE as u16);
+        let class = CdcAcmClass::new(&mut builder, &mut state.state, MAX_PACKET_SIZE as u16, None);
         let (mut sender, mut receiver) = class.split();
 
         // Build the builder.
